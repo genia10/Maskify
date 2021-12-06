@@ -58,17 +58,6 @@ class ObjectRecognitionActivity : AppCompatActivity() {
         masksButton.setOnClickListener{ // Обработчик нажатия на кнопку выбора масок
             openMaskChoiceActivity()
         }
-        /*thread {
-            val client = Socket("194.85.173.14", 7777)
-            var abc = client.getInputStream().readBytes()
-            File("/storage/emulated/0/Android/media/org.tensorflow.lite.examples.detection/ObjectDetectionDemo/1.jpg").writeBytes(abc)
-            client.close()
-        }
-        var a = "1 2 dssdgsdgs"
-        var list1 = a.split(" ");
-        var list = listOf<String>("1", "2", "dssdgsdgs")*/
-        //Log.e("123", list.toString().substring(1,list.toString().length - 1).replace(',', ' '));
-
     }
 
     override fun onDestroy() {
@@ -82,29 +71,6 @@ class ObjectRecognitionActivity : AppCompatActivity() {
         val intent = Intent(this, MaskChoiceActivity::class.java)
         startActivity(intent)
     }
-
-    /*private fun showAcceptedRejectedButton( acceptedRejected:Boolean) {
-        if (acceptedRejected) {
-            cameraExecutor.shutdown()
-            llBottom.visibility = View.VISIBLE
-            viewFinder.visibility = View.INVISIBLE
-            masksButton.visibility = View.INVISIBLE
-            iv_capture.visibility = View.VISIBLE
-            captureButton.hide()
-            viewFinder.visibility = View.GONE
-        } else {
-            captureButton.show()
-            masksButton.visibility = View.VISIBLE
-            llBottom.visibility = View.GONE
-            iv_capture.visibility = View.INVISIBLE
-            viewFinder.visibility = View.VISIBLE
-            viewFinder.post(Runnable() {
-                fun  run() {
-                    startCamera()
-                }
-            })
-        }
-    }*/
 
     private fun bindCamera(cameraProvider: ProcessCameraProvider) {
         val preview = Preview.Builder()
