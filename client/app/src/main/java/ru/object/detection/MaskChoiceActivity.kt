@@ -9,6 +9,11 @@ import androidx.recyclerview.widget.GridLayoutManager
 
 import androidx.recyclerview.widget.RecyclerView
 import ru.`object`.detection.util.RecyclerViewAdapter
+import android.widget.Toast
+import android.widget.TextView
+
+
+
 
 class MaskChoiceActivity : AppCompatActivity() ,RecyclerViewAdapter.ItemClickListener {
     var adapter: RecyclerViewAdapter? = null
@@ -16,7 +21,6 @@ class MaskChoiceActivity : AppCompatActivity() ,RecyclerViewAdapter.ItemClickLis
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_mask_choice)
         var availableMasks = getCurrentMasks()
-        //costructTable()
         /*thread {
             val client = Socket("194.85.173.14", 7777)
             var abc = client.getInputStream().readBytes()
@@ -31,10 +35,12 @@ class MaskChoiceActivity : AppCompatActivity() ,RecyclerViewAdapter.ItemClickLis
         val recyclerView = findViewById<RecyclerView>(R.id.rvNumbers)
         val numberOfColumns = 3
         recyclerView.layoutManager = GridLayoutManager(this, numberOfColumns)
-        try {
+        try
+        {
             adapter = RecyclerViewAdapter(this, availableMasks as Array<String>)
         }
-        catch (e: Exception) {
+        catch (e: Exception)
+        {
             throw ClassCastException(e.message);
         }
         adapter!!.setClickListener(this)
@@ -42,9 +48,12 @@ class MaskChoiceActivity : AppCompatActivity() ,RecyclerViewAdapter.ItemClickLis
     }
 
     override fun onItemClick(view: View?, position: Int) {
-        Log.i(
-            "TAG",
-            "You clicked number " + adapter!!.getItem(position) + ", which is at cell position " + position
+        val recyclerView = findViewById<RecyclerView>(R.id.rvNumbers)
+        val title =
+            (recyclerView.findViewHolderForAdapterPosition(position)?.itemView?.findViewById(R.id.info_text) as TextView).text.toString()
+        Log.e(
+            "123",
+            "You clicked number " + adapter!!.getItem(position) + ", which is at cell position " + position + ", image title: " + title
         )
     }
 
