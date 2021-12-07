@@ -71,7 +71,7 @@ class ObjectRecognitionActivity : AppCompatActivity() {
     }
 
     private fun showCurrentMask() {
-        var toast = Toast.makeText(this@ObjectRecognitionActivity, "Текущая маска: " + activeMask,
+        var toast = Toast.makeText(this@ObjectRecognitionActivity, "Текущая маска: $activeMask",
             Toast.LENGTH_LONG)
         toast.setGravity(Gravity.TOP, 0, 50)
         toast.show()

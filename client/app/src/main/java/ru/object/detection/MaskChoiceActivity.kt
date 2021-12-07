@@ -16,6 +16,7 @@ import android.view.WindowManager
 import android.widget.ProgressBar
 import android.content.Intent
 import ru.`object`.detection.util.Mask
+import ru.`object`.detection.util.ServerCommunication
 import java.io.File
 import java.net.Socket
 import kotlin.concurrent.thread
@@ -26,17 +27,24 @@ class MaskChoiceActivity : AppCompatActivity() ,RecyclerViewAdapter.ItemClickLis
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_mask_choice)
-        //var availableMasks = loadMaskList()
+        var server = ServerCommunication()
         var availableMasks = Mask.getCurrentMasks()
-        var absent = arrayOf("789", "7ff89")    //Здесь Получение недостающих масок с сервера
+        var absent = arrayOf<String>()
+        thread {
+            val client = server.connect()
+            server.sendCurrentMasks(availableMasks, client)
+            absent = server.getMissingList(client)
+            server.disconnect(client)
+        }
+        var absent1 = arrayOf("789", "7ff89")
+        createGrid(availableMasks, absent1)
         /*var data = arrayOf("123", "456", "789", "12ds3", "4fds56", "7ff89", "12sdf3", "45hj6", "7k89", "1sdfsdf23", "45sdfsf6", "7sdf89",
             "123", "456", "789", "12ds3", "4fds56", "7ff89", "12sdf3", "45hj6", "7k89", "1sdfsdf23", "45sdfsf6", "7sdf89",
             "123", "456", "789", "12ds3", "4fds56", "7ff89", "12sdf3", "45hj6", "7k89", "1sdfsdf23", "45sdfsf6", "7sdf89",
             "123", "456", "789", "12ds3", "4fds56", "7ff89", "12sdf3", "45hj6", "7k89", "1sdfsdf23", "45sdfsf6", "7sdf89")*/
-        createGrid(availableMasks, absent)
         /*thread {
             val client = Socket("194.85.173.14", 7777)
-            var abc = client.getInputStream().readBytes()
+            var abc = client.getInputStream()
             File("/storage/emulated/0/Android/media/org.tensorflow.lite.examples.detection/ObjectDetectionDemo/1.jpg").writeBytes(abc)
             client.close()
         }
