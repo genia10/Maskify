@@ -19,9 +19,10 @@ import ru.`object`.detection.MaskChoiceActivity
 
 
 
-class RecyclerViewAdapter internal constructor(context: Context?, data: Array<String>) :
+class RecyclerViewAdapter internal constructor(context: Context?, data: Array<String>, absent: Array<String> ) :
     RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder>() {
     private val mData: Array<String>
+    private val mAbsent: Array<String>
     private val mInflater: LayoutInflater
     private var mClickListener: ItemClickListener? = null
 
@@ -38,6 +39,8 @@ class RecyclerViewAdapter internal constructor(context: Context?, data: Array<St
     // binds the data to the TextView in each cell
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.myTextView.text = mData[position]
+        if (mAbsent.contains(mData[position]))
+            holder.myTextView.alpha = 0.3f
     }
 
     // total number of cells
@@ -78,5 +81,6 @@ class RecyclerViewAdapter internal constructor(context: Context?, data: Array<St
     init {
         mInflater = LayoutInflater.from(context)
         mData = data
+        mAbsent = absent
     }
 }
