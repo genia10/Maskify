@@ -1,5 +1,6 @@
 package ru.`object`.detection
 
+import android.app.Activity
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -9,12 +10,11 @@ import androidx.recyclerview.widget.GridLayoutManager
 
 import androidx.recyclerview.widget.RecyclerView
 import ru.`object`.detection.util.RecyclerViewAdapter
-import android.widget.Toast
 import android.widget.TextView
 
-import android.app.ProgressDialog
-import android.opengl.Visibility
+import android.view.WindowManager
 import android.widget.ProgressBar
+import android.content.Intent
 
 
 class MaskChoiceActivity : AppCompatActivity() ,RecyclerViewAdapter.ItemClickListener {
@@ -22,8 +22,8 @@ class MaskChoiceActivity : AppCompatActivity() ,RecyclerViewAdapter.ItemClickLis
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_mask_choice)
-        var availableMasks = getCurrentMasks()
-        var absent = arrayOf("789", "7ff89")
+        var availableMasks = loadMaskList()
+        var absent = arrayOf("789", "7ff89")    //Здесь Получение недостающих масок с сервера
         var data = arrayOf("123", "456", "789", "12ds3", "4fds56", "7ff89", "12sdf3", "45hj6", "7k89", "1sdfsdf23", "45sdfsf6", "7sdf89",
             "123", "456", "789", "12ds3", "4fds56", "7ff89", "12sdf3", "45hj6", "7k89", "1sdfsdf23", "45sdfsf6", "7sdf89",
             "123", "456", "789", "12ds3", "4fds56", "7ff89", "12sdf3", "45hj6", "7k89", "1sdfsdf23", "45sdfsf6", "7sdf89",
@@ -64,11 +64,39 @@ class MaskChoiceActivity : AppCompatActivity() ,RecyclerViewAdapter.ItemClickLis
             "123",
             "You clicked  " + adapter!!.getItem(position) + ", which is at cell position " + position + ", with alpha = " + alpha.toString()
         )
-        (recyclerView.findViewHolderForAdapterPosition(position)?.itemView?.findViewById(R.id.info_text) as TextView).visibility = View.GONE
-        (recyclerView.findViewHolderForAdapterPosition(position)?.itemView?.findViewById(R.id.progress_bar) as ProgressBar).visibility = View.VISIBLE
+        if(alpha != 1.0f) {
+            (recyclerView.findViewHolderForAdapterPosition(position)?.itemView?.findViewById(R.id.info_text) as TextView).visibility = View.GONE
+            (recyclerView.findViewHolderForAdapterPosition(position)?.itemView?.findViewById(R.id.progress_bar) as ProgressBar).visibility = View.VISIBLE
+            getWindow().setFlags(
+                WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
+                WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
+            android.os.Handler().postDelayed(
+                {
+                    loadMask(view, position)
+                    (recyclerView.findViewHolderForAdapterPosition(position)?.itemView?.findViewById(R.id.info_text) as TextView).visibility = View.VISIBLE
+                    (recyclerView.findViewHolderForAdapterPosition(position)?.itemView?.findViewById(R.id.progress_bar) as ProgressBar).visibility = View.GONE
+                    (recyclerView.findViewHolderForAdapterPosition(position)?.itemView?.findViewById(R.id.info_text) as TextView).alpha = 1.0f
+                    getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+                    val intent = Intent()
+                    intent.putExtra("chosenMask", adapter!!.getItem(position))
+                    setResult(Activity.RESULT_OK, intent)
+                    finish()
+                }, 2000)
+
+        }
+        else {
+            val intent = Intent()
+            intent.putExtra("chosenMask", adapter!!.getItem(position))
+            setResult(Activity.RESULT_OK, intent)
+            finish()
+        }
     }
 
-    private fun getCurrentMasks(): Array<out String>? {
+    private fun loadMask(view: View?, position: Int) {
+        //Загрузка маски с сервера
+    }
+
+    private fun loadMaskList(): Array<out String>? {
         return assets.list("masks")
     }
 }

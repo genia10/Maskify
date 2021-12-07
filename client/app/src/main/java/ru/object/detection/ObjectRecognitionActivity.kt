@@ -1,10 +1,14 @@
 package ru.`object`.detection
 
+import android.app.Activity
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
+import android.view.Gravity
 import android.view.View
+import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.camera.core.*
 import androidx.camera.lifecycle.ProcessCameraProvider
@@ -25,6 +29,8 @@ import java.io.*
 class ObjectRecognitionActivity : AppCompatActivity() {
 
     private lateinit var previewView: PreviewView
+
+    private lateinit var activeMask : String
 
     private var imageCapture: ImageCapture? = null
 
@@ -58,6 +64,15 @@ class ObjectRecognitionActivity : AppCompatActivity() {
         masksButton.setOnClickListener{ // Обработчик нажатия на кнопку выбора масок
             openMaskChoiceActivity()
         }
+        activeMask = assets.list("masks")?.first() ?: ""
+        showCurrentMask()
+    }
+
+    private fun showCurrentMask() {
+        var toast = Toast.makeText(this@ObjectRecognitionActivity, "Текущая маска: " + activeMask,
+            Toast.LENGTH_LONG)
+        toast.setGravity(Gravity.TOP, 0, 50)
+        toast.show()
     }
 
     override fun onDestroy() {
@@ -65,11 +80,31 @@ class ObjectRecognitionActivity : AppCompatActivity() {
         super.onDestroy()
     }
 
+    override fun onBackPressed() {
+        AlertDialog.Builder(this).apply {
+            setTitle("Выход")
+            setMessage("Вы действительно хотите выйти?")
+            setPositiveButton("Да") { _, _ ->super.onBackPressed()}
+            setNegativeButton("Нет"){_, _ ->}
+            setCancelable(true)
+        }.create().show()
+    }
+
     // Переход на активити выбора масок
     private fun openMaskChoiceActivity() {
-        executor.shutdown()
         val intent = Intent(this, MaskChoiceActivity::class.java)
-        startActivity(intent)
+        startActivityForResult(intent, 0)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == 0) {
+            if (resultCode == Activity.RESULT_OK) {
+                val returnString = data!!.getStringExtra("chosenMask")
+                activeMask = returnString
+                showCurrentMask()
+            }
+        }
     }
 
     private fun bindCamera(cameraProvider: ProcessCameraProvider) {
