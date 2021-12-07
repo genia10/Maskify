@@ -8,21 +8,20 @@
     android:layout_height="300dp">
 
     <ProgressBar
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:id="@+id/progress_bar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_gravity="center"
         android:indeterminateDrawable="@drawable/spinner_ring"
         android:indeterminateOnly="true"
-        android:visibility="visible" />
+        android:visibility="gone" />
 
     <TextView
         android:id="@+id/info_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="5dp"
         android:background="@drawable/mask_background"
         android:gravity="bottom|center_horizontal"
-        android:textSize="16sp"
-        tools:visibility="gone" />
+        android:textSize="16sp" />
 
 </LinearLayout>

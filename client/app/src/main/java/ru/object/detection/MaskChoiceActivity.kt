@@ -14,6 +14,7 @@ import android.widget.TextView
 
 import android.app.ProgressDialog
 import android.opengl.Visibility
+import android.widget.ProgressBar
 
 
 class MaskChoiceActivity : AppCompatActivity() ,RecyclerViewAdapter.ItemClickListener {
@@ -63,7 +64,8 @@ class MaskChoiceActivity : AppCompatActivity() ,RecyclerViewAdapter.ItemClickLis
             "123",
             "You clicked  " + adapter!!.getItem(position) + ", which is at cell position " + position + ", with alpha = " + alpha.toString()
         )
-        //(recyclerView.findViewHolderForAdapterPosition(position)?.itemView?.findViewById(R.id.info_text) as TextView).visibility = GONE
+        (recyclerView.findViewHolderForAdapterPosition(position)?.itemView?.findViewById(R.id.info_text) as TextView).visibility = View.GONE
+        (recyclerView.findViewHolderForAdapterPosition(position)?.itemView?.findViewById(R.id.progress_bar) as ProgressBar).visibility = View.VISIBLE
     }
 
     private fun getCurrentMasks(): Array<out String>? {
