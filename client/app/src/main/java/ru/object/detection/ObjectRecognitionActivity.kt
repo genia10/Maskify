@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.text.format.DateFormat
 import android.util.Log
 import android.view.Gravity
 import android.view.View
@@ -19,6 +20,7 @@ import kotlinx.android.synthetic.main.activity_object_recognition.*
 import org.tensorflow.lite.examples.detection.R
 import ru.`object`.detection.camera.CameraPermissionsResolver
 import ru.`object`.detection.camera.ObjectDetectorAnalyzer
+import ru.`object`.detection.util.Mask
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.ExecutorService
@@ -64,7 +66,7 @@ class ObjectRecognitionActivity : AppCompatActivity() {
         masksButton.setOnClickListener{ // Обработчик нажатия на кнопку выбора масок
             openMaskChoiceActivity()
         }
-        activeMask = assets.list("masks")?.first() ?: ""
+        activeMask = Mask.getCurrentMasks().first()
         showCurrentMask()
     }
 

@@ -15,6 +15,10 @@ import android.widget.TextView
 import android.view.WindowManager
 import android.widget.ProgressBar
 import android.content.Intent
+import ru.`object`.detection.util.Mask
+import java.io.File
+import java.net.Socket
+import kotlin.concurrent.thread
 
 
 class MaskChoiceActivity : AppCompatActivity() ,RecyclerViewAdapter.ItemClickListener {
@@ -22,13 +26,14 @@ class MaskChoiceActivity : AppCompatActivity() ,RecyclerViewAdapter.ItemClickLis
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_mask_choice)
-        var availableMasks = loadMaskList()
+        //var availableMasks = loadMaskList()
+        var availableMasks = Mask.getCurrentMasks()
         var absent = arrayOf("789", "7ff89")    //Здесь Получение недостающих масок с сервера
-        var data = arrayOf("123", "456", "789", "12ds3", "4fds56", "7ff89", "12sdf3", "45hj6", "7k89", "1sdfsdf23", "45sdfsf6", "7sdf89",
+        /*var data = arrayOf("123", "456", "789", "12ds3", "4fds56", "7ff89", "12sdf3", "45hj6", "7k89", "1sdfsdf23", "45sdfsf6", "7sdf89",
             "123", "456", "789", "12ds3", "4fds56", "7ff89", "12sdf3", "45hj6", "7k89", "1sdfsdf23", "45sdfsf6", "7sdf89",
             "123", "456", "789", "12ds3", "4fds56", "7ff89", "12sdf3", "45hj6", "7k89", "1sdfsdf23", "45sdfsf6", "7sdf89",
-            "123", "456", "789", "12ds3", "4fds56", "7ff89", "12sdf3", "45hj6", "7k89", "1sdfsdf23", "45sdfsf6", "7sdf89")
-        createGrid(data, absent)
+            "123", "456", "789", "12ds3", "4fds56", "7ff89", "12sdf3", "45hj6", "7k89", "1sdfsdf23", "45sdfsf6", "7sdf89")*/
+        createGrid(availableMasks, absent)
         /*thread {
             val client = Socket("194.85.173.14", 7777)
             var abc = client.getInputStream().readBytes()
@@ -94,9 +99,5 @@ class MaskChoiceActivity : AppCompatActivity() ,RecyclerViewAdapter.ItemClickLis
 
     private fun loadMask(view: View?, position: Int) {
         //Загрузка маски с сервера
-    }
-
-    private fun loadMaskList(): Array<out String>? {
-        return assets.list("masks")
     }
 }
