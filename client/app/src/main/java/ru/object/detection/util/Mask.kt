@@ -25,7 +25,7 @@ class Mask {
             var folder = File("/storage/emulated/0/Android/media/org.tensorflow.lite.examples.detection/Masks")
             if(!folder.exists())
                 folder.mkdir()
-            File("/storage/emulated/0/Android/media/org.tensorflow.lite.examples.detection/Masks").walkTopDown().forEach { list.add(it.name) }
+            File("/storage/emulated/0/Android/media/org.tensorflow.lite.examples.detection/Masks").walkTopDown().forEach { list.add(it.name.replace(".png", "")) }
             list.remove("Masks")
             return list.toTypedArray()
         }

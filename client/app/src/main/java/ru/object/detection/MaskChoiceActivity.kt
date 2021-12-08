@@ -15,43 +15,45 @@ import android.widget.TextView
 import android.view.WindowManager
 import android.widget.ProgressBar
 import android.content.Intent
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.launch
 import ru.`object`.detection.util.Mask
 import ru.`object`.detection.util.ServerCommunication
 import java.io.File
 import java.net.Socket
+import java.util.concurrent.Callable
+import java.util.concurrent.ExecutorService
+import java.util.concurrent.Executors
 import kotlin.concurrent.thread
 
 
-class MaskChoiceActivity : AppCompatActivity() ,RecyclerViewAdapter.ItemClickListener {
+class MaskChoiceActivity : AppCompatActivity(), RecyclerViewAdapter.ItemClickListener {
     var adapter: RecyclerViewAdapter? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_mask_choice)
         var server = ServerCommunication()
         var availableMasks = Mask.getCurrentMasks()
-        var absent = arrayOf<String>()
-        thread {
+        var absent = arrayOf("789", "7ff89")
+        var thread = Thread {
             val client = server.connect()
             server.sendCurrentMasks(availableMasks, client)
-            absent = server.getMissingList(client)
+            //absent = server.getMissingList(client)
             server.disconnect(client)
         }
-        var absent1 = arrayOf("789", "7ff89")
-        createGrid(availableMasks, absent1)
+        thread.start()
+        thread.join()
+        var availableMaskList = availableMasks.toMutableList()
+        //var absent = arrayOf("789", "7ff89")
+        availableMaskList.addAll(absent)
+        availableMasks = availableMaskList.toTypedArray()
+        createGrid(availableMasks, absent)
         /*var data = arrayOf("123", "456", "789", "12ds3", "4fds56", "7ff89", "12sdf3", "45hj6", "7k89", "1sdfsdf23", "45sdfsf6", "7sdf89",
             "123", "456", "789", "12ds3", "4fds56", "7ff89", "12sdf3", "45hj6", "7k89", "1sdfsdf23", "45sdfsf6", "7sdf89",
             "123", "456", "789", "12ds3", "4fds56", "7ff89", "12sdf3", "45hj6", "7k89", "1sdfsdf23", "45sdfsf6", "7sdf89",
             "123", "456", "789", "12ds3", "4fds56", "7ff89", "12sdf3", "45hj6", "7k89", "1sdfsdf23", "45sdfsf6", "7sdf89")*/
-        /*thread {
-            val client = Socket("194.85.173.14", 7777)
-            var abc = client.getInputStream()
-            File("/storage/emulated/0/Android/media/org.tensorflow.lite.examples.detection/ObjectDetectionDemo/1.jpg").writeBytes(abc)
-            client.close()
-        }
-        var a = "1 2 dssdgsdgs"
-        var list1 = a.split(" ");
-        var list = listOf<String>("1", "2", "dssdgsdgs")*/
-        //Log.e("123", list.toString().substring(1,list.toString().length - 1).replace(',', ' '));
     }
 
     private fun createGrid(data : Array<String>, absent : Array<String>) {
@@ -106,6 +108,16 @@ class MaskChoiceActivity : AppCompatActivity() ,RecyclerViewAdapter.ItemClickLis
     }
 
     private fun loadMask(view: View?, position: Int) {
+        var server = ServerCommunication()
+        var chosenMask = adapter!!.getItem(position)
         //Загрузка маски с сервера
+        var thread = Thread {
+            val client = server.connect()
+            server.sendMaskDownloadRequest(chosenMask, client)
+            server.getMask(chosenMask, client)
+            server.disconnect(client)
+        }
+        thread.start()
+        thread.join()
     }
 }
