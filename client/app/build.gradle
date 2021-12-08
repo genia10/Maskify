@@ -46,5 +46,5 @@ dependencies {
 
     implementation 'com.google.android.material:material:1.4.0'
 
-    implementation 'org.tensorflow:tensorflow-lite:1.14.0'
+    implementation 'org.tensorflow:tensorflow-lite:2.7.0'
 }

@@ -46,6 +46,7 @@ class ObjectRecognitionActivity : AppCompatActivity() {
             modelFile = "detect.tflite",
             labelsFile = "labelmap.txt"
     )
+//    private
 // 123
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

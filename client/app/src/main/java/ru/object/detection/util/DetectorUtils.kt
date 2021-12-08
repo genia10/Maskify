@@ -34,10 +34,10 @@ object DetectorUtils {
     }
 
     fun fillBuffer(
-            imgData: ByteBuffer,
-            pixels: IntArray,
-            inputSize: Int,
-            isModelQuantized: Boolean
+        imgData: ByteBuffer,
+        pixels: IntArray,
+        inputSize: Int,
+        isModelQuantized: Boolean
     ) {
         imgData.rewind()
         for (i in 0 until inputSize) {
@@ -48,9 +48,14 @@ object DetectorUtils {
                     imgData.put((pixelValue shr 8 and 0xFF).toByte())
                     imgData.put((pixelValue and 0xFF).toByte())
                 } else {
-                    imgData.putFloat(((pixelValue shr 16 and 0xFF) - IMAGE_MEAN) / IMAGE_STD)
-                    imgData.putFloat(((pixelValue shr 8 and 0xFF) - IMAGE_MEAN) / IMAGE_STD)
-                    imgData.putFloat(((pixelValue and 0xFF) - IMAGE_MEAN) / IMAGE_STD)
+//                    imgData.putDouble()
+//                    imgData.putFloat(((pixelValue shr 16 and 0xFF) - IMAGE_MEAN) / IMAGE_STD)
+//                    imgData.putFloat(((pixelValue shr 8 and 0xFF) - IMAGE_MEAN) / IMAGE_STD)
+//                    imgData.putFloat(((pixelValue and 0xFF) - IMAGE_MEAN) / IMAGE_STD)
+                    imgData.putFloat(((pixelValue shr 16 and 0xFF).toFloat()))
+                    imgData.putFloat(((pixelValue shr 8 and 0xFF).toFloat()))
+                    imgData.putFloat(((pixelValue and 0xFF).toFloat()))
+
                 }
             }
         }
