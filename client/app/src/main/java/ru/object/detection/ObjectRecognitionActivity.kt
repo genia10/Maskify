@@ -1,36 +1,38 @@
 package ru.`object`.detection
 
-import android.Manifest
-import android.graphics.Bitmap
+import android.app.Activity
+import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.os.Environment
-import android.os.Environment.DIRECTORY_DCIM
-import android.os.Environment.DIRECTORY_PICTURES
+import android.text.format.DateFormat
 import android.util.Log
-import android.util.Size
+import android.view.Gravity
 import android.view.View
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.camera.core.*
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.camera.view.PreviewView
 import androidx.core.content.ContextCompat
-import androidx.lifecycle.LifecycleOwner
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_object_recognition.*
 import org.tensorflow.lite.examples.detection.R
 import ru.`object`.detection.camera.CameraPermissionsResolver
 import ru.`object`.detection.camera.ObjectDetectorAnalyzer
-import java.io.File
+import ru.`object`.detection.util.Mask
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
+import java.io.*
+
 class ObjectRecognitionActivity : AppCompatActivity() {
 
     private lateinit var previewView: PreviewView
+
+    private lateinit var activeMask : String
 
     private var imageCapture: ImageCapture? = null
 
@@ -60,11 +62,54 @@ class ObjectRecognitionActivity : AppCompatActivity() {
                 },
                 onFail = ::showSnackbar
         )
+
+        masksButton.setOnClickListener{ // Обработчик нажатия на кнопку выбора масок
+            openMaskChoiceActivity()
+        }
+        var maskList = Mask.getCurrentMasks()
+        if(maskList.count() != 0)
+            activeMask = maskList.first()
+        else activeMask = "Масок нет!"
+        showCurrentMask()
+    }
+
+    private fun showCurrentMask() {
+        var toast = Toast.makeText(this@ObjectRecognitionActivity, "Текущая маска: $activeMask",
+            Toast.LENGTH_LONG)
+        toast.setGravity(Gravity.TOP, 0, 50)
+        toast.show()
     }
 
     override fun onDestroy() {
         executor.shutdown()
         super.onDestroy()
+    }
+
+    override fun onBackPressed() {
+        AlertDialog.Builder(this).apply {
+            setTitle("Выход")
+            setMessage("Вы действительно хотите выйти?")
+            setPositiveButton("Да") { _, _ ->super.onBackPressed()}
+            setNegativeButton("Нет"){_, _ ->}
+            setCancelable(true)
+        }.create().show()
+    }
+
+    // Переход на активити выбора масок
+    private fun openMaskChoiceActivity() {
+        val intent = Intent(this, MaskChoiceActivity::class.java)
+        startActivityForResult(intent, 0)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == 0) {
+            if (resultCode == Activity.RESULT_OK) {
+                val returnString = data!!.getStringExtra("chosenMask")
+                activeMask = returnString
+                showCurrentMask()
+            }
+        }
     }
 
     private fun bindCamera(cameraProvider: ProcessCameraProvider) {
@@ -105,7 +150,6 @@ class ObjectRecognitionActivity : AppCompatActivity() {
 
         return imageAnalysis
     }
-
     private  fun setImageCapture():ImageCapture {
         val imageCapture = ImageCapture.Builder()
             .setFlashMode(ImageCapture.FLASH_MODE_AUTO)
