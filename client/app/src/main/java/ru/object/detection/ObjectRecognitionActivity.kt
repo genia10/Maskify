@@ -66,7 +66,10 @@ class ObjectRecognitionActivity : AppCompatActivity() {
         masksButton.setOnClickListener{ // Обработчик нажатия на кнопку выбора масок
             openMaskChoiceActivity()
         }
-        activeMask = Mask.getCurrentMasks().first()
+        var maskList = Mask.getCurrentMasks()
+        if(maskList.count() != 0)
+            activeMask = maskList.first()
+        else activeMask = "Масок нет!"
         showCurrentMask()
     }
 
@@ -147,7 +150,6 @@ class ObjectRecognitionActivity : AppCompatActivity() {
 
         return imageAnalysis
     }
-
     private  fun setImageCapture():ImageCapture {
         val imageCapture = ImageCapture.Builder()
             .setFlashMode(ImageCapture.FLASH_MODE_AUTO)

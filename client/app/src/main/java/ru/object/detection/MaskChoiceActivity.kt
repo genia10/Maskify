@@ -38,10 +38,12 @@ class MaskChoiceActivity : AppCompatActivity(), RecyclerViewAdapter.ItemClickLis
         var availableMasks = Mask.getCurrentMasks()
         var absent = arrayOf("789", "7ff89")
         var thread = Thread {
-            val client = server.connect()
-            server.sendCurrentMasks(availableMasks, client)
-            //absent = server.getMissingList(client)
-            server.disconnect(client)
+            server.connect()
+            if(server.checkServerAlive())
+                server.sendCurrentMasks(availableMasks)
+            else Log.e("123", "Не удалось отправить текущие маски")
+            absent = server.getMissingList()
+            server.disconnect()
         }
         thread.start()
         thread.join()
@@ -112,10 +114,10 @@ class MaskChoiceActivity : AppCompatActivity(), RecyclerViewAdapter.ItemClickLis
         var chosenMask = adapter!!.getItem(position)
         //Загрузка маски с сервера
         var thread = Thread {
-            val client = server.connect()
-            server.sendMaskDownloadRequest(chosenMask, client)
-            server.getMask(chosenMask, client)
-            server.disconnect(client)
+            server.connect()
+            server.sendMaskDownloadRequest(chosenMask)
+            server.getMask(chosenMask)
+            server.disconnect()
         }
         thread.start()
         thread.join()

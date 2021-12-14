@@ -16,7 +16,7 @@ class Mask {
         var folder = File("/storage/emulated/0/Android/media/org.tensorflow.lite.examples.detection/Masks")
         if(!folder.exists())
             folder.mkdir()
-        File("/storage/emulated/0/Android/media/org.tensorflow.lite.examples.detection/Masks/$name").writeBytes(data)
+        File("/storage/emulated/0/Android/media/org.tensorflow.lite.examples.detection/Masks/$name.png").writeBytes(data)
     }
 
     companion object {
