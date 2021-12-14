@@ -1,0 +1,5 @@
+HELLO
+GETALL
+dragon gasMask human robber saw woodBoy
+ENDALL
+EXIT
