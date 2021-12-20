@@ -35,7 +35,7 @@ class MaskChoiceActivity : AppCompatActivity(), RecyclerViewAdapter.ItemClickLis
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_mask_choice)
         var server = ServerCommunication()
-        var availableMasks = Mask.getCurrentMasks()
+        var availableMasks = Mask.getCurrentMasks("/storage/emulated/0/Android/media/org.tensorflow.lite.examples.detection/Masks")
         var absent = arrayOf("789", "7ff89")
         var thread = Thread {
             server.connect()

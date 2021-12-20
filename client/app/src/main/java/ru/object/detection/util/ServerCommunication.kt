@@ -95,7 +95,7 @@ class ServerCommunication {
             data = addBytes(data, bytes, count)
             //out.write(bytes, 0, count)
         }
-        mask.save(data.toByteArray())
+        mask.save(data.toByteArray(), "/storage/emulated/0/Android/media/org.tensorflow.lite.examples.detection/Masks")
         outputStream?.write("EXIT\n".toByteArray())
         return true
     }
