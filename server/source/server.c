@@ -8,7 +8,7 @@
 
 #include "server.h"
 
-#define BUF_SIZE 255
+#define LINE_SIZE 255
 
 
 /**
@@ -36,7 +36,7 @@ void print_client_info(struct sockaddr_in *sinp)
         perror_exit("inet_ntop ERROR");
 
     // Выводим адрес и порт
-    char log_buf[BUF_SIZE];
+    char log_buf[LINE_SIZE];
     sprintf(log_buf, "Новый клиент - %s:%d", addr, ntohs(sinp->sin_port));
     log_print(log_buf);
 }
@@ -58,7 +58,7 @@ int main(int argc, char *argv[])
     setvbuf(server.log_file, NULL, _IONBF, 0);
 
     // Выводим сообщение о успешном запуске программы
-    char log_buf[BUF_SIZE];
+    char log_buf[LINE_SIZE];
     sprintf(log_buf, "Программа успешно запущена PID(%d).", server.PID);
     log_print(log_buf);
     atexit(print_end);

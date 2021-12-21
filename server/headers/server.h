@@ -1,5 +1,5 @@
 /**
- * server.h -- содержит прототипы всех используемых сервером функций
+ * server.h -- содержит прототипы используемых сервером функций
  *
  * Copyright (c) 2021 Roman "nikanoro" Nikanorov
  *
@@ -29,6 +29,11 @@ struct {
     char *port;
     FILE *log_file;
 } server;
+
+#define READ_BUF_SIZE 2
+#define BUF_SIZE 4000000
+#define PATH_SIZE 255
+
 
 // Основные функции
 void prepare_child_processes();
