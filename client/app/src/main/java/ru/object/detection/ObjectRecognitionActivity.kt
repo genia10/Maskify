@@ -66,7 +66,7 @@ class ObjectRecognitionActivity : AppCompatActivity() {
         masksButton.setOnClickListener{ // Обработчик нажатия на кнопку выбора масок
             openMaskChoiceActivity()
         }
-        var maskList = Mask.getCurrentMasks("/storage/emulated/0/Android/media/org.tensorflow.lite.examples.detection/Masks")
+        var maskList = Mask.getCurrentMasks("/storage/emulated/0/Android/media/Masks")
         if(maskList.count() != 0)
             activeMask = maskList.first()
         else activeMask = "Масок нет!"

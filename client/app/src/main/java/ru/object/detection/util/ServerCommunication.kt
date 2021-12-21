@@ -85,7 +85,6 @@ class ServerCommunication {
         var mask = Mask(maskName)
         var reader = Scanner(inputStream)
         var a = reader.nextLine()
-        //var out = File("/storage/emulated/0/Android/media/org.tensorflow.lite.examples.detection/Masks/$maskName.png").outputStream()
         var data = mutableListOf<Byte>()
         val bytes = ByteArray(16178)
         var count: Int =0
@@ -100,7 +99,7 @@ class ServerCommunication {
             //out.write(bytes, 0, count)
         }
         if(!test)
-            mask.save(data.toByteArray(), "/storage/emulated/0/Android/media/org.tensorflow.lite.examples.detection/Masks")
+            mask.save(data.toByteArray(), "/storage/emulated/0/Android/media/Masks")
         outputStream?.write("EXIT\n".toByteArray())
         return true
     }
