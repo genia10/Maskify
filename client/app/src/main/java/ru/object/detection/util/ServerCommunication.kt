@@ -1,10 +1,7 @@
 package ru.`object`.detection.util
 
 import android.util.Log
-import java.io.File
-import java.io.FileOutputStream
-import java.io.InputStream
-import java.io.OutputStream
+import java.io.*
 import java.lang.StringBuilder
 import java.net.Socket
 import java.util.*
@@ -38,13 +35,13 @@ class ServerCommunication {
         return res
     }
 
-    fun sendCurrentMasks(masks: Array<String>)
-    {
+    fun sendCurrentMasks(masks: Array<String>): Boolean {
         var list = masks.toMutableList().toString()
         var sendMasksString = list.substring(1, list.toString().length - 1).replace(", ", " ")
         outputStream?.write("GETALL\n".toByteArray())
         outputStream?.write(sendMasksString.toByteArray())
         outputStream?.write("\nENDALL\n".toByteArray())
+        return true
     }
 
     fun getMissingList(): Array<String> {
@@ -62,10 +59,17 @@ class ServerCommunication {
         return maskArray.toTypedArray()
     }
 
-    fun sendMaskDownloadRequest(maskName: String) {
-        outputStream?.write("GETONE\n".toByteArray())
-        outputStream?.write(maskName.toByteArray())
-        outputStream?.write("\nENDONE\n".toByteArray())
+    fun sendMaskDownloadRequest(maskName: String): Boolean {
+        try {
+            outputStream?.write("GETONE\n".toByteArray())
+            outputStream?.write(maskName.toByteArray())
+            outputStream?.write("\nENDONE\n".toByteArray())
+        }
+        catch (e:IOException) {
+            Log.e("123", "Не отправить запрос на загрузку маски")
+            return false
+        }
+        return true
     }
 
     fun addBytes(list: MutableList<Byte>, bytes: ByteArray, count:Int) : MutableList<Byte> {
@@ -77,7 +81,7 @@ class ServerCommunication {
         return list
     }
 
-    fun getMask(maskName: String) : Boolean {
+    fun getMask(maskName: String, test: Boolean) : Boolean {
         var mask = Mask(maskName)
         var reader = Scanner(inputStream)
         var a = reader.nextLine()
@@ -95,7 +99,8 @@ class ServerCommunication {
             data = addBytes(data, bytes, count)
             //out.write(bytes, 0, count)
         }
-        mask.save(data.toByteArray(), "/storage/emulated/0/Android/media/org.tensorflow.lite.examples.detection/Masks")
+        if(!test)
+            mask.save(data.toByteArray(), "/storage/emulated/0/Android/media/org.tensorflow.lite.examples.detection/Masks")
         outputStream?.write("EXIT\n".toByteArray())
         return true
     }

@@ -116,7 +116,7 @@ class MaskChoiceActivity : AppCompatActivity(), RecyclerViewAdapter.ItemClickLis
         var thread = Thread {
             server.connect()
             server.sendMaskDownloadRequest(chosenMask)
-            server.getMask(chosenMask)
+            server.getMask(chosenMask, false)
             server.disconnect()
         }
         thread.start()

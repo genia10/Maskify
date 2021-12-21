@@ -10,7 +10,7 @@ import java.nio.file.Paths
 class MaskTest {
 
     @Test
-    fun save() {
+    fun saveTest() {
         var maskname = "testMask"
         var mask = Mask(maskname)
         var path = Paths.get("").toAbsolutePath().toString()
@@ -20,7 +20,7 @@ class MaskTest {
     }
 
     @Test
-    fun getCurrentMasks() {
+    fun getCurrentMasksTest() {
         var path = Paths.get("").toAbsolutePath().toString() +"/Masks"
         File(path).mkdir()
         File("$path/123.png").writeText("testContent1")
