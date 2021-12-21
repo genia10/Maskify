@@ -13,7 +13,7 @@ server: $(OBJECTS) $(HEADERS)
 	gcc $(CFLAGS) -c -o $@ $< -Iheaders
 
 clean:
-	rm $(EXECUTABLE) $(SOURCEDIR)*.o $(SOURCEDIR)*~
+	rm $(EXECUTABLE) $(SOURCEDIR)*.o $(SOURCEDIR)*~ *~
 
 clear:
-	rm $(SOURCEDIR)*.o $(SOURCEDIR)*~
+	rm $(SOURCEDIR)*.o $(SOURCEDIR)*~ *~
