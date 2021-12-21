@@ -12,20 +12,20 @@ class Mask {
         this.name = name
     }
 
-    fun save(data: ByteArray) {
-        var folder = File("/storage/emulated/0/Android/media/org.tensorflow.lite.examples.detection/Masks")
+    fun save(data: ByteArray, path: String) {
+        var folder = File(path)
         if(!folder.exists())
             folder.mkdir()
-        File("/storage/emulated/0/Android/media/org.tensorflow.lite.examples.detection/Masks/$name.png").writeBytes(data)
+        File("$path/$name.png").writeBytes(data)
     }
 
     companion object {
-        fun getCurrentMasks(): Array<String> {
+        fun getCurrentMasks(path: String): Array<String> {
             val list = mutableListOf<String>()
-            var folder = File("/storage/emulated/0/Android/media/org.tensorflow.lite.examples.detection/Masks")
+            var folder = File(path)
             if(!folder.exists())
                 folder.mkdir()
-            File("/storage/emulated/0/Android/media/org.tensorflow.lite.examples.detection/Masks").walkTopDown().forEach { list.add(it.name.replace(".png", "")) }
+            File(path).walkTopDown().forEach { list.add(it.name.replace(".png", "")) }
             list.remove("Masks")
             return list.toTypedArray()
         }

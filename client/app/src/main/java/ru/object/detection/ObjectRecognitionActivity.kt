@@ -66,7 +66,7 @@ class ObjectRecognitionActivity : AppCompatActivity() {
         masksButton.setOnClickListener{ // Обработчик нажатия на кнопку выбора масок
             openMaskChoiceActivity()
         }
-        var maskList = Mask.getCurrentMasks()
+        var maskList = Mask.getCurrentMasks("/storage/emulated/0/Android/media/Masks")
         if(maskList.count() != 0)
             activeMask = maskList.first()
         else activeMask = "Масок нет!"
@@ -162,7 +162,10 @@ class ObjectRecognitionActivity : AppCompatActivity() {
     }
 
     private fun takePhoto() {
-        Log.e("TAG", "Captured");
+        var toast = Toast.makeText(this@ObjectRecognitionActivity, "Captured",
+            Toast.LENGTH_LONG)
+        toast.setGravity(Gravity.TOP, 0, 50)
+        toast.show()
         val imageCapture = imageCapture ?: return
 
         val photoFile = File(getOutputDirectory() , SimpleDateFormat(FILENAME_FORMAT, Locale.US).format(System.currentTimeMillis()) + ".jpg") // You can store the image in the cache for example using `cacheDir.absolutePath` as a path.
@@ -170,8 +173,6 @@ class ObjectRecognitionActivity : AppCompatActivity() {
         val outputOptions = ImageCapture.OutputFileOptions
             .Builder(photoFile)
             .build()
-
-        Log.e("TAG", "Captured");
 
         imageCapture.takePicture(
             outputOptions,

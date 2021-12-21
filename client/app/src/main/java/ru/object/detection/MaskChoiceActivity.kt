@@ -35,7 +35,7 @@ class MaskChoiceActivity : AppCompatActivity(), RecyclerViewAdapter.ItemClickLis
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_mask_choice)
         var server = ServerCommunication()
-        var availableMasks = Mask.getCurrentMasks()
+        var availableMasks = Mask.getCurrentMasks("/storage/emulated/0/Android/media/Masks")
         var absent = arrayOf("789", "7ff89")
         var thread = Thread {
             server.connect()
@@ -116,7 +116,7 @@ class MaskChoiceActivity : AppCompatActivity(), RecyclerViewAdapter.ItemClickLis
         var thread = Thread {
             server.connect()
             server.sendMaskDownloadRequest(chosenMask)
-            server.getMask(chosenMask)
+            server.getMask(chosenMask, false)
             server.disconnect()
         }
         thread.start()
