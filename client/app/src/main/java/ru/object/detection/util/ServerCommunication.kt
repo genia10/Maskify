@@ -66,7 +66,7 @@ class ServerCommunication {
             outputStream?.write("\nENDONE\n".toByteArray())
         }
         catch (e:IOException) {
-            Log.e("123", "Не отправить запрос на загрузку маски")
+            Log.e("123", "Не удалось отправить запрос на загрузку маски")
             return false
         }
         return true
