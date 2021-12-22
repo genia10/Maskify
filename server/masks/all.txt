@@ -1,0 +1,12 @@
+black
+carnaval
+dragon
+gasMask
+human
+ironMan
+paperHouse
+robber
+saw
+shrek
+spiderMan
+woodBoy
