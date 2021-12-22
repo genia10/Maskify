@@ -46,6 +46,6 @@ void log_err_exit(char *msg)
     char time[23];
     get_time_line(time);
     fprintf(server.log_file, "%s %s\n\n", time, msg);
-    printf("Программа завершилась с ошибкой. Смотрите log файл.\n");
+    fprintf(stderr, "Программа завершилась с ошибкой. Смотрите log файл.\n");
     exit(EXIT_FAILURE);
 }

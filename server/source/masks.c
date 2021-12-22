@@ -31,6 +31,9 @@ int get_missing_masks(char *masks, char *missing)
     if ((length = strlen(missing)) != 0) {
 	missing[length - 1] = '\n';
 	missing[length] = '\0';
+    } else {
+	missing[0] = '\n';
+	missing[1] = '\0';	
     }
     
     return 0;
