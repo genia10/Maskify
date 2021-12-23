@@ -7,6 +7,7 @@
 #include "munit.h"
 #include "commands.h"
 #include "suites.h"
+#include "helper.h"
 
 #if defined(_MSC_VER)
 #pragma warning(disable: 4127)
@@ -88,12 +89,7 @@ static MunitResult test_send_command(const MunitParameter params[], void* data)
     munit_assert_false(send_command(sd, command));
     close(sd);
 
-    munit_assert_not_null(f = fopen(TMP_TXT, "r"));
-    size = fread(buf, 1, 254, f);
-    buf[size] = '\0';
-    munit_assert_size(size, ==, strlen(expected)); 
-    munit_assert_string_equal(buf, expected);
-    fclose(f);
+    check_file(TMP_TXT, expected);
 				    
     return MUNIT_OK;
 }
