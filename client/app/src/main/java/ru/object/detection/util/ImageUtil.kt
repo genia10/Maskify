@@ -111,5 +111,8 @@ object ImageUtil {
 
         return -0x1000000 or (r shl 6 and 0xff0000) or (g shr 2 and 0xff00) or (b shr 10 and 0xff)
     }
+    private fun makeCrop(input: IntArray) {
+
+    }
 
 }

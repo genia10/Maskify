@@ -7,11 +7,18 @@ class InterpreterResultHolder(val detections: Int) {
     val outputScores = Array(1) { FloatArray(detections) }
     val numDetections = FloatArray(1)
 
-    fun  createOutputMap() = mapOf(
-            0 to outputLocations,
-            1 to outputClasses,
-            2 to outputScores,
-            3 to numDetections
+    fun createOutputMap() = mapOf(
+        0 to outputLocations,
+        1 to outputClasses,
+        2 to outputScores,
+        3 to numDetections
     )
 
+}
+
+class KeypointsInterpreterResultHolder {
+    val output = Array(1) { FloatArray(18) }
+    fun createOutputMap() = mapOf(
+        0 to output
+    )
 }
