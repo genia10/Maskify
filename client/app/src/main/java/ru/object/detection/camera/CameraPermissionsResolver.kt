@@ -35,13 +35,16 @@ class CameraPermissionsResolver(
         } else {
             requestCameraPermissionLauncher.launch(arrayOf(
                     Manifest.permission.CAMERA,
-                    Manifest.permission.WRITE_EXTERNAL_STORAGE
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                    Manifest.permission.INTERNET
             ))
         }
     }
 
     private fun isAllPermissionsGranted(): Boolean {
-        return isPermissionGranted(Manifest.permission.CAMERA) && isPermissionGranted(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+        return isPermissionGranted(Manifest.permission.CAMERA)
+                && isPermissionGranted(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                && isPermissionGranted(Manifest.permission.INTERNET)
     }
 
     private fun isPermissionGranted(permission: String): Boolean {
